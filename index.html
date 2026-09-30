@@ -1,0 +1,1358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<title>Growth Audit — Epic</title>
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Roboto:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: only light;
+  /* ---- Epic, extracted from their live screens, logo SVG and getepic.com ---- */
+  --ep-blue:#0A96E6; --ep-blue-dk:#0885CD; --ep-blue-soft:#B9E0F8;
+  --ep-tint:#EAF5FD; --ep-reader:#E8EFF5;
+  --ep-bg:#FFFFFF; --ep-card:#FFFFFF; --ep-line:#CBD3DC; --ep-line2:#E3E8EE;
+  --ep-ink:#3C4B62; --ep-txt:#505D70; --ep-muted:#8B96A5;
+  --ep-pink:#E9559B; --ep-green:#3DB36B; --ep-yellow:#FAD604; --ep-grey:#B7C0CB;
+  --r-ctl:28px; --r-media:12px;
+  /* ---- the report shell, in Epic's own palette ---- */
+  --bg:#F3F8FC; --bg2:#FFFFFF; --surf:#FFFFFF;
+  --hair:rgba(60,75,98,.10); --hair2:rgba(60,75,98,.18);
+  --ink:#233149; --ink2:#4A586D; --ink3:#7F8B9C;
+  --accent:#0A96E6;          /* buttons, active chip, AND every outcome number (Bogdan's call) */
+  --accent-lift:#0A96E6;     /* outcome ranges + band numbers — Epic blue, set large enough to read */
+  --accent-text:#0776B8;     /* small eyebrow text, where the bright blue is too light */
+  --panel:#FFFFFF; --panel-ink:#15202E; --panel-muted:#5F6B7A; --panel-line:#E6EBF0;
+  --accent-ink:#0A96E6;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+@media(max-width:700px){.wrap{padding:0 20px}}
+
+/* ============ top bar ============ */
+.nav{position:sticky;top:0;z-index:70;background:rgba(243,248,252,.86);backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--hair)}
+.nav-in{max-width:1080px;margin:0 auto;padding:0 32px;height:58px;display:flex;align-items:center;gap:18px}
+@media(max-width:700px){.nav-in{padding:0 20px;gap:12px}}
+.nav-brand{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.nav-brand .mk{width:26px;height:26px;flex:none;display:block;border-radius:7px;overflow:hidden;box-shadow:0 1px 3px rgba(10,150,230,.3)}
+.nav-brand .mk img{width:26px;height:26px;display:block}
+.nav-brand span{color:var(--ink2);font-weight:500}
+.nav-brand b{color:var(--ink);font-weight:600}
+.nav-links{margin-left:auto;display:flex;gap:2px;align-items:center}
+.nav-links button{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink3);transition:.16s}
+.nav-links button:hover{color:var(--ink)}
+.nav-links button.on{color:var(--ink);background:#fff;box-shadow:0 1px 4px rgba(60,75,98,.08)}
+@media(max-width:640px){.nav-brand span{display:none}}
+
+.view{display:none}
+.view.on{display:block}
+
+/* ============ hero ============ */
+.hero{padding:104px 0 0;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-340px;left:50%;transform:translateX(-50%);
+  width:1100px;height:640px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(10,150,230,.20),transparent 72%)}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(38% 46% at 8% 22%,rgba(233,85,155,.14),transparent 70%),
+   radial-gradient(36% 44% at 92% 18%,rgba(250,214,4,.18),transparent 70%)}
+.hero>*{position:relative;z-index:1}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-text);margin-bottom:26px}
+.hero h1{font-size:76px;line-height:.98;font-weight:700;letter-spacing:-.045em;margin:0 0 24px}
+@media(max-width:820px){.hero h1{font-size:50px}.hero{padding-top:70px}}
+.hero .lede{font-size:20px;line-height:1.5;font-weight:400;color:var(--ink2);max-width:600px;margin:0 auto;letter-spacing:-.012em}
+@media(max-width:820px){.hero .lede{font-size:17px}}
+.hero .meta{margin-top:30px;font-size:12.5px;color:var(--ink3);letter-spacing:.02em}
+.hero .meta b{color:var(--ink2);font-weight:600}
+
+.stats{display:flex;justify-content:center;gap:0;margin:70px auto 0;max-width:760px;
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.stat{flex:1;padding:26px 14px;text-align:center;border-left:1px solid var(--hair)}
+.stat:first-child{border-left:none}
+.stat b{display:block;font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--ink)}
+.stat span{display:block;font-size:11.5px;color:var(--ink3);margin-top:5px;line-height:1.35}
+@media(max-width:700px){.stat b{font-size:19px}.stat{padding:18px 8px}}
+
+.fb{max-width:760px;margin:0 auto;padding:30px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:26px;text-align:left}
+@media(max-width:700px){.fb{grid-template-columns:1fr;gap:20px;padding-top:24px}}
+.fb-k{grid-column:1/-1;font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink3);text-align:center;margin-bottom:-6px}
+.fb-i{display:flex;gap:12px;align-items:flex-start}
+.fb-i .tick{width:18px;height:18px;flex:none;margin-top:3px;border-radius:50%;background:rgba(10,150,230,.14);
+  display:grid;place-items:center}
+.fb-i .tick svg{width:10px;height:10px;stroke:var(--accent);stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.fb-i p{font-size:14px;line-height:1.55;color:var(--ink2);margin:0}
+.fb-i p b{color:var(--ink);font-weight:700}
+
+.sec{padding:96px 0}
+.sec-k{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:18px}
+.sec h2{font-size:38px;line-height:1.14;font-weight:700;letter-spacing:-.035em;margin:0 0 20px;max-width:680px}
+@media(max-width:820px){.sec h2{font-size:29px}.sec{padding:64px 0}}
+.sec p.body{font-size:17px;line-height:1.66;color:var(--ink2);max-width:640px;margin:0 0 18px;letter-spacing:-.008em}
+.sec p.body b{color:var(--ink);font-weight:600}
+.rule{height:1px;background:var(--hair);margin:0}
+
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;max-width:820px}
+@media(max-width:760px){.notes{grid-template-columns:1fr}}
+.note{background:var(--surf);border:1px solid var(--hair);box-shadow:0 2px 10px rgba(60,75,98,.04);border-radius:16px;padding:24px 26px}
+.note h4{font-size:15px;font-weight:700;letter-spacing:-.015em;margin:0 0 8px}
+.note p{font-size:14px;line-height:1.6;color:var(--ink2);margin:0}
+
+.ideas{display:flex;flex-direction:column;gap:0;margin-top:14px;border-top:1px solid var(--hair)}
+.idea{display:grid;grid-template-columns:52px 1fr 190px;gap:26px;align-items:start;
+  padding:30px 4px;border-bottom:1px solid var(--hair);text-align:left;width:100%;transition:.18s}
+.idea:hover{background:rgba(255,255,255,.75)}
+@media(max-width:780px){.idea{grid-template-columns:38px 1fr;gap:16px}}
+.idea .no{font-size:13px;font-weight:700;color:var(--ink3);padding-top:4px;letter-spacing:.02em}
+.idea h3{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.024em;margin:0 0 7px}
+@media(max-width:820px){.idea h3{font-size:18px}}
+.idea p{font-size:14.5px;line-height:1.6;color:var(--ink2);margin:0;max-width:540px}
+.idea .out{text-align:right;padding-top:3px}
+@media(max-width:780px){.idea .out{grid-column:2;text-align:left;padding-top:12px}}
+.idea .out b{display:block;font-size:20px;font-weight:800;letter-spacing:-.025em;color:var(--accent-lift);white-space:nowrap;line-height:1.3}
+.idea .out span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.idea .seeit{display:inline-flex;align-items:center;gap:5px;margin-top:11px;font-size:12.5px;
+  font-weight:600;color:var(--accent-text)}
+.idea .seeit svg{width:12px;height:12px}
+
+.band{background:var(--surf);border:1px solid var(--hair);border-radius:28px;box-shadow:0 2px 10px rgba(60,75,98,.04);padding:40px 44px;margin-top:44px;
+  display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+@media(max-width:700px){.band{padding:28px 24px;gap:22px}}
+.band .lab{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.band .txt{flex:1;min-width:240px}
+.band .txt p{font-size:15.5px;line-height:1.6;color:var(--ink2);margin:0}
+.band .nums{display:flex;gap:34px}
+.band .nums div b{display:block;font-size:32px;font-weight:800;letter-spacing:-.035em;color:var(--accent-lift)}
+.band .nums div span{display:block;font-size:11px;color:var(--ink3);margin-top:2px;letter-spacing:.04em;
+  text-transform:uppercase;font-weight:600}
+
+.cta-row{display:flex;justify-content:center;margin-top:52px;align-items:center;gap:22px;flex-wrap:wrap}
+.bigbtn{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  font-size:15px;font-weight:700;letter-spacing:-.01em;padding:15px 26px;border-radius:30px;transition:.16s;
+  box-shadow:0 8px 20px -10px rgba(10,150,230,.8)}
+.bigbtn:hover{filter:brightness(1.06)}
+.bigbtn svg{width:15px;height:15px}
+
+.foot{border-top:1px solid var(--hair);padding:36px 0 70px;font-size:12.5px;line-height:1.6;color:var(--ink3)}
+
+/* ============ prototype stage ============ */
+.stage{display:grid;grid-template-columns:minmax(440px,1fr) minmax(400px,470px);gap:0;
+  align-items:start;min-height:calc(100vh - 58px)}
+@media(max-width:1080px){.stage{grid-template-columns:1fr}}
+.phonecol{padding:34px 24px 46px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.panelcol{border-left:1px solid var(--hair);background:var(--panel);color:var(--panel-ink);
+  min-height:calc(100vh - 58px);position:sticky;top:58px;max-height:calc(100vh - 58px);overflow-y:auto}
+@media(max-width:1080px){.panelcol{position:static;max-height:none;border-left:none;border-top:1px solid var(--hair)}}
+
+.phone{position:relative;width:390px;height:844px;flex:none;background:#000;border:11px solid #000;
+  border-radius:46px;box-shadow:0 0 0 1.5px #CFD9E3,0 34px 70px -22px rgba(35,49,73,.38)}
+.phone-in{position:absolute;inset:0;border-radius:36px;overflow:hidden;background:var(--ep-bg);color-scheme:only light}
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:104px;height:30px;background:#000;
+  border-radius:16px;z-index:60;pointer-events:none}
+.sbar{position:absolute;top:0;left:0;right:0;height:50px;z-index:55;pointer-events:none;display:flex;
+  align-items:center;justify-content:space-between;padding:14px 28px 0 34px;font:700 15px/1 'Roboto',sans-serif;color:#111;transition:color .3s}
+.sbar.light{color:#fff}
+.sbar .glyphs{display:flex;gap:5px;align-items:center}
+.homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:134px;height:5px;
+  border-radius:3px;background:#111;z-index:56;pointer-events:none;transition:background .3s}
+.homebar.light{background:rgba(255,255,255,.9)}
+.screenwrap{position:absolute;inset:0;overflow:hidden;background:var(--ep-bg)}
+
+/* ============ phone screens — Epic's system, all prefixed scr-/ep- ============ */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ep-bg);color:var(--ep-ink);
+  font-family:'Roboto',-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif;
+  transform:translateX(100%);transition:transform .36s cubic-bezier(.32,.72,0,1);z-index:10;will-change:transform}
+.scr.is-active{transform:translateX(0);z-index:20}
+.scr.is-past{transform:translateX(-24%)}
+.scr.sheet{transform:translateY(100%)}
+.scr.sheet.is-active{transform:translateY(0);z-index:30}
+.scr.nofx{transition:none}
+.scr-top{flex:none;padding:56px 22px 0;position:relative;z-index:2}
+.scr-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 22px;scrollbar-width:none;position:relative;z-index:2}
+.scr-body::-webkit-scrollbar{display:none}
+.scr-body.dock{display:flex;flex-direction:column}
+.scr-foot{flex:none;padding:12px 22px 30px;position:relative;z-index:2}
+
+.ep-hd{font-family:'Nunito','PingFang SC','Hiragino Sans GB',sans-serif}
+.ep-nav{display:flex;align-items:center;justify-content:space-between;height:36px}
+.ep-back,.ep-x{width:36px;height:36px;display:grid;place-items:center;color:var(--ep-blue);flex:none}
+.ep-back svg{width:26px;height:26px}
+.ep-x svg{width:24px;height:24px}
+.ep-h{font:900 25px/1.2 'Nunito','PingFang SC',sans-serif;letter-spacing:-.01em;color:var(--ep-blue);text-align:center;margin:10px 4px 0}
+.ep-sub{font-size:15px;line-height:1.5;color:var(--ep-txt);text-align:center;margin:10px 6px 0}
+
+.ep-btn{display:block;width:100%;height:52px;border-radius:26px;background:var(--ep-blue);color:#fff;
+  font:800 17px/1 'Nunito','PingFang SC',sans-serif;letter-spacing:.005em;transition:filter .15s;
+  box-shadow:0 5px 14px -8px rgba(10,150,230,.9)}
+.ep-btn:hover{filter:brightness(1.05)}
+.ep-btn[disabled]{background:var(--ep-blue-soft);box-shadow:none;cursor:default}
+.ep-link{display:block;width:100%;text-align:center;font:800 14.5px/1 'Nunito','PingFang SC',sans-serif;color:var(--ep-blue);padding:14px 0 2px}
+.ep-fine{font-size:11.5px;line-height:1.4;color:var(--ep-muted);text-align:center;margin-top:9px}
+
+/* welcome */
+.scr--welcome{background:var(--ep-blue)}
+.scr--welcome .scr-top{padding:58px 26px 0}
+.ep-wlogo{height:34px;display:block;filter:brightness(0) invert(1)}
+.ep-wh{font:900 33px/1.13 'Nunito','PingFang SC',sans-serif;color:#fff;margin:18px 0 0;letter-spacing:-.01em}
+.ep-ws{font-size:16px;line-height:1.5;color:rgba(255,255,255,.88);margin:12px 0 0}
+.scr--welcome .scr-body{padding:0;display:flex;justify-content:center;align-items:flex-end}
+.ep-wart{display:block;width:auto;height:100%;max-height:330px;max-width:100%;object-fit:contain;margin:0 auto}
+.scr--welcome .scr-foot{padding:6px 26px 22px}
+.ep-wbtn{display:block;width:100%;height:50px;border-radius:25px;background:#fff;color:var(--ep-blue);
+  font:900 17px/1 'Nunito','PingFang SC',sans-serif;box-shadow:0 6px 16px -8px rgba(0,0,0,.35)}
+.ep-wl{display:block;width:100%;text-align:center;color:#fff;font:700 15px/1 'Roboto',sans-serif;padding:11px 0 0;opacity:.95}
+.ep-wl.login{font-weight:500;font-size:14px}
+.ep-wl.login b{font-weight:700}
+.ep-dots{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.ep-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45)}
+.ep-dots i.on{background:#fff}
+
+/* verify age — their keypad */
+.ep-gtitle{font:900 24px/1 'Nunito','PingFang SC',sans-serif;color:var(--ep-blue);text-align:center;flex:1}
+.ep-yp{font-size:16px;color:var(--ep-txt);text-align:center;margin:26px 0 0}
+.ep-boxes{display:flex;gap:9px;justify-content:center;margin-top:16px}
+.ep-boxes span{width:40px;height:44px;border:1.5px solid var(--ep-line);border-radius:4px;display:grid;place-items:center;
+  font:500 19px/1 'Roboto',sans-serif;color:var(--ep-muted);transition:border-color .15s}
+.ep-boxes span.cur{border-color:var(--ep-blue);border-width:2px}
+.ep-boxes.bad{animation:shake .38s}
+@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+.ep-pad{display:grid;grid-template-columns:repeat(3,78px);gap:14px 20px;justify-content:center;margin-top:34px}
+.ep-key{width:78px;height:78px;border-radius:50%;background:var(--ep-blue);color:#fff;font:700 26px/1 'Roboto',sans-serif;
+  display:grid;place-items:center;transition:transform .1s,filter .1s;box-shadow:0 3px 8px -4px rgba(10,150,230,.8)}
+.ep-key:active,.ep-key.hit{transform:scale(.92);filter:brightness(.88)}
+.ep-key.z{grid-column:2}
+.ep-del{width:78px;height:78px;display:grid;place-items:center;color:var(--ep-blue)}
+.ep-del svg{width:40px;height:30px}
+.ep-yerr{font-size:13px;color:#D6455D;text-align:center;margin-top:12px;min-height:18px}
+
+/* data practices */
+.ep-dh{font:900 24px/1.2 'Nunito','PingFang SC',sans-serif;color:var(--ep-blue);text-align:center;margin:18px 10px 0}
+.ep-dlist{margin:18px 0 0;padding:0 0 12px;list-style:none;border-top:1px solid var(--ep-line2);padding-top:14px}
+.ep-dlist li{font-size:13.5px;line-height:1.45;color:var(--ep-ink);margin-bottom:13px;padding-left:12px;position:relative}
+.ep-dlist li::before{content:'-';position:absolute;left:0;top:0}
+
+/* first book — their dropdown + grid */
+.ep-bh{font:900 25px/1.2 'Nunito','PingFang SC',sans-serif;color:var(--ep-blue);text-align:center;margin:8px 8px 0}
+.ep-cp{font:700 15px/1.3 'Roboto',sans-serif;color:var(--ep-ink);text-align:center;margin-top:16px}
+.ep-sel{position:relative;margin-top:10px}
+.ep-sel select{appearance:none;-webkit-appearance:none;width:100%;height:46px;border:1.5px solid var(--ep-line2);border-radius:6px;
+  background:#fff;font:400 16px/1 'Roboto','PingFang SC',sans-serif;color:var(--ep-ink);padding:0 40px 0 12px;cursor:pointer}
+.ep-sel svg{position:absolute;right:13px;top:17px;width:16px;height:12px;pointer-events:none;fill:var(--ep-ink)}
+.ep-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;padding-bottom:18px}
+.ep-cov{display:block;width:100%;aspect-ratio:396/500;border-radius:10px;overflow:hidden;background:#EEF2F6;
+  box-shadow:0 3px 10px rgba(30,50,80,.16);transition:transform .15s,box-shadow .15s;position:relative}
+.ep-cov img{width:100%;height:100%;object-fit:cover;display:block}
+.ep-cov:hover{transform:translateY(-2px)}
+.ep-cov.on{box-shadow:0 0 0 3px var(--ep-blue),0 3px 10px rgba(30,50,80,.16)}
+
+/* child name */
+.ep-ncov{width:150px;margin:6px auto 0;aspect-ratio:396/500;border-radius:10px;overflow:hidden;box-shadow:0 4px 14px rgba(30,50,80,.2)}
+.ep-ncov img{width:100%;height:100%;object-fit:cover;display:block}
+.ep-nl{font:700 15px/1 'Roboto',sans-serif;color:var(--ep-ink);text-align:center;margin-top:26px}
+.ep-in{display:block;width:100%;height:46px;margin-top:10px;border:1.5px solid var(--ep-line2);border-radius:6px;padding:0 12px;
+  font:400 16px/1 'Roboto','PingFang SC',sans-serif;color:var(--ep-ink);background:#fff;outline:none}
+.ep-in:focus{border-color:var(--ep-blue)}
+
+/* loader */
+.scr--load{background:var(--ep-blue)}
+.ep-loadwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 4px 0}
+.ep-llogo{height:52px;filter:brightness(0) invert(1);animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-3deg)}}
+.ep-lbar{width:210px;height:8px;border-radius:4px;background:rgba(255,255,255,.28);margin:22px 0 22px;overflow:hidden}
+.ep-lbar i{display:block;height:100%;width:0;background:#fff;border-radius:4px}
+.ep-lh{font:900 23px/1.2 'Nunito','PingFang SC',sans-serif;color:#fff;text-align:center;margin:0 0 18px}
+.ep-lsteps{width:100%;max-width:300px;display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.ep-ls{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:500;color:rgba(255,255,255,.6);transition:.35s}
+.ep-ls.on{color:#fff}
+.ep-ls .d{width:22px;height:22px;flex:none;border-radius:50%;border:2px solid rgba(255,255,255,.5);display:grid;place-items:center;transition:.35s}
+.ep-ls.on .d{background:#fff;border-color:#fff}
+.ep-ls .d svg{width:12px;height:12px;stroke:var(--ep-blue);stroke-width:3.4;fill:none;opacity:0;stroke-linecap:round;stroke-linejoin:round}
+.ep-ls.on .d svg{opacity:1}
+.ep-quote{width:100%;max-width:310px;background:rgba(255,255,255,.16);border-radius:18px;padding:15px 17px;min-height:112px}
+.ep-quote p{font-size:14px;line-height:1.5;color:#fff}
+.ep-quote b{display:block;margin-top:8px;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.85)}
+.ep-qd{display:flex;gap:5px;justify-content:center;margin-top:12px}
+.ep-qd i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);transition:.3s}
+.ep-qd i.on{background:#fff;width:16px;border-radius:3px}
+
+/* payoff — their book-detail layout */
+.scr--pay0{background:var(--ep-reader)}
+.ep-rbar{flex:none;background:var(--ep-blue);padding:54px 16px 10px;display:flex;align-items:center;gap:18px;color:#fff;position:relative;z-index:3}
+.ep-rbar svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ep-rbar .sp{flex:1}
+.scr--pay0 .scr-body{padding:12px 14px 0}
+.ep-rcard{background:#fff;border-radius:10px;padding:18px 18px 16px;text-align:center}
+.ep-rcov{width:132px;margin:0 auto;aspect-ratio:396/500;border-radius:8px;overflow:hidden;box-shadow:0 3px 10px rgba(30,50,80,.18)}
+.ep-rcov img{width:100%;height:100%;object-fit:cover;display:block}
+.ep-rt{font:700 15px/1.3 'Roboto',sans-serif;color:var(--ep-ink);margin-top:14px}
+.ep-rfor{display:inline-flex;align-items:center;gap:6px;margin-top:9px;background:var(--ep-tint);color:var(--ep-blue-dk);
+  border-radius:14px;padding:5px 11px;font:800 13px/1.2 'Nunito','PingFang SC',sans-serif}
+.ep-rfor svg{width:14px;height:14px;fill:var(--ep-blue)}
+.ep-rcard .ep-btn{margin-top:14px;height:46px;font-size:16px}
+.ep-fav{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:42px;margin-top:10px;border:2px solid var(--ep-blue);
+  border-radius:22px;color:var(--ep-blue);font:800 15px/1 'Nunito','PingFang SC',sans-serif;background:#fff}
+.ep-fav svg{width:20px;height:20px;stroke:var(--ep-blue);stroke-width:2.2;fill:none}
+.ep-fav.on svg{fill:var(--ep-pink);stroke:var(--ep-pink)}
+.ep-rcard2{background:#fff;border-radius:10px;padding:14px 16px;margin-top:12px;text-align:left}
+.ep-rk{font:700 14px/1.3 'Roboto',sans-serif;color:var(--ep-ink)}
+.ep-next{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.ep-next div{aspect-ratio:396/500;border-radius:7px;overflow:hidden;box-shadow:0 2px 6px rgba(30,50,80,.14)}
+.ep-next img{width:100%;height:100%;object-fit:cover;display:block}
+.ep-more{font-size:12.5px;color:var(--ep-muted);margin-top:10px}
+.ep-vrow{display:flex;align-items:center;gap:11px;font-size:13.5px;line-height:1.4;color:var(--ep-ink);margin-top:10px}
+.ep-vrow i{width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;font-style:normal}
+.ep-vrow i svg{width:13px;height:13px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* plan screen — their Epic Family paywall */
+.scr--pw .scr-top{padding:50px 20px 0}
+.scr--pw .scr-body{padding:0 20px}
+.scr--pw .scr-foot{padding:10px 20px 22px;border-top:1px solid var(--ep-line2);background:var(--ep-bg)}
+.ep-pwnav{display:flex;justify-content:flex-end;height:34px;margin-right:-8px}
+.ep-pwh{font:900 24px/1.18 'Nunito','PingFang SC',sans-serif;color:var(--ep-blue);text-align:center;margin:0 6px 0;letter-spacing:-.005em}
+.ep-pws{font-size:14px;line-height:1.45;color:var(--ep-txt);text-align:center;margin:8px 8px 0}
+.ep-proof{display:flex;align-items:center;justify-content:center;gap:6px 10px;margin:12px 0 0;flex-wrap:wrap}
+.ep-pchip{display:flex;align-items:center;gap:5px;font:700 12.5px/1 'Roboto',sans-serif;color:var(--ep-ink);white-space:nowrap}
+.ep-pchip .st{color:#F5A623;letter-spacing:-1px;font-size:13px}
+.ep-pchip svg{width:15px;height:15px}
+.ep-pdiv{width:1px;height:16px;background:var(--ep-line2)}
+.ep-p95{font-size:12px;line-height:1.35;color:var(--ep-txt);text-align:center;margin:8px 10px 0}
+.ep-p95 b{color:var(--ep-ink)}
+.ep-plans{display:flex;flex-direction:column;gap:12px;margin-top:18px;padding-bottom:10px}
+.ep-plan{position:relative;display:block;width:100%;text-align:left;background:#fff;border:2px solid transparent;border-radius:10px;
+  padding:14px 14px 12px;box-shadow:0 2px 10px rgba(30,50,80,.12);transition:.16s}
+.ep-plan.on{background:var(--ep-tint);border-color:var(--ep-blue);box-shadow:none}
+.ep-save{position:absolute;left:-7px;top:-11px;background:var(--ep-pink);color:#fff;font:900 11px/1 'Nunito',sans-serif;
+  padding:5px 9px 5px 8px;border-radius:3px 3px 3px 0;letter-spacing:.03em}
+.ep-save::after{content:'';position:absolute;left:0;bottom:-5px;border-top:5px solid #A8306B;border-left:7px solid transparent}
+.ep-prow{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ep-pn{display:block;font:700 16px/1.2 'Roboto',sans-serif;color:var(--ep-ink)}
+.ep-pt{display:block;font:700 12.5px/1.2 'Roboto',sans-serif;color:var(--ep-blue);margin-top:4px}
+.ep-pp{text-align:right;font:700 17px/1.2 'Roboto',sans-serif;color:var(--ep-ink);white-space:nowrap}
+.ep-pp{display:block}.ep-pp small{display:block;font:400 12px/1.2 'Roboto',sans-serif;color:var(--ep-muted);margin-top:4px}
+.ep-tl{display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(10,150,230,.18)}
+.ep-plan.on .ep-tl{display:block}
+.ep-ts{display:grid;grid-template-columns:28px 1fr;gap:10px;position:relative;padding-bottom:10px}
+.ep-ts:last-child{padding-bottom:0}
+.ep-ts::before{content:'';position:absolute;left:13px;top:28px;bottom:-2px;width:3px;background:#D5DDE5;border-radius:2px}
+.ep-ts:first-child::before{background:linear-gradient(180deg,var(--ep-green),#D5DDE5)}
+.ep-ts:last-child::before{display:none}
+.ep-ti{width:28px;height:28px;border-radius:50%;background:#B9C3CE;display:grid;place-items:center;position:relative;z-index:1}
+.ep-ti svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ep-ts:first-child .ep-ti{background:var(--ep-green)}
+.ep-ts b{display:block;font:700 13.5px/1.2 'Roboto',sans-serif;color:var(--ep-ink);padding-top:1px}
+.ep-ts span{display:block;font-size:12.5px;line-height:1.38;color:var(--ep-txt);margin-top:2px}
+.ep-after{font-size:11.5px;color:var(--ep-muted);text-align:center;margin-top:8px}
+
+/* offer on close */
+.scr--offer .scr-top{padding:50px 20px 0}
+.scr--offer .scr-body{padding:0 20px}
+.scr--offer .scr-foot{padding:10px 20px 22px;border-top:1px solid var(--ep-line2);background:var(--ep-bg)}
+.ep-cmp{margin-top:18px;border-radius:10px;overflow:hidden;border:1.5px solid var(--ep-line2)}
+.ep-cr{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ep-line2)}
+.ep-cr:first-child{border-top:none}
+.ep-cr>div{padding:10px 11px;font-size:13px;line-height:1.35;color:var(--ep-txt)}
+.ep-cr>div:last-child{background:var(--ep-tint);color:var(--ep-ink);font-weight:500}
+.ep-cr.hd>div{font:900 13.5px/1.2 'Nunito','PingFang SC',sans-serif;color:var(--ep-ink);padding:11px}
+.ep-cr.hd>div:last-child{color:#fff;background:var(--ep-blue)}
+.ep-cr small{display:block;font:700 10.5px/1.2 'Roboto',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--ep-muted);margin-bottom:3px}
+.ep-cr>div:last-child small{color:var(--ep-blue-dk)}
+.ep-ocard{margin-top:16px}
+
+/* account — their Create Your Account */
+.ep-soc{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+.ep-sb{display:flex;align-items:center;height:44px;border:1.5px solid #3B4452;border-radius:22px;padding:0 16px;
+  font:400 14.5px/1 'Roboto',sans-serif;color:var(--ep-ink);background:#fff;position:relative}
+.ep-sb svg,.ep-sb img{width:20px;height:20px;position:absolute;left:14px}
+.ep-sb span{flex:1;text-align:center}
+.ep-signin{display:block;text-align:center;font:700 14px/1 'Roboto',sans-serif;color:var(--ep-blue)}
+.ep-signin b{font-weight:700}
+
+/* trial started + system prompt */
+.ep-th{font:900 25px/1.2 'Nunito','PingFang SC',sans-serif;color:var(--ep-blue);text-align:center;margin-top:190px}
+.ep-tp{font-size:15px;line-height:1.55;color:var(--ep-txt);text-align:center;margin:16px 14px 0}
+.scr--trial .scr-foot{padding-bottom:40px}
+.scr--trial .ep-btn{width:60%;margin:0 auto}
+.ep-dim{position:absolute;inset:0;z-index:40;background:rgba(20,26,34,.35);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.ep-dim.on{opacity:1;pointer-events:auto}
+.ep-alert{width:270px;border-radius:14px;background:rgba(242,242,244,.97);text-align:center;overflow:hidden;font-family:-apple-system,'Roboto',sans-serif}
+.ep-alert h5{font-size:16.5px;line-height:1.25;font-weight:600;color:#111;padding:18px 16px 4px}
+.ep-alert p{font-size:12.5px;line-height:1.35;color:#222;padding:0 16px 16px}
+.ep-alert div{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(0,0,0,.15)}
+.ep-alert button{height:44px;color:#0A7AFF;font-size:16.5px}
+.ep-alert button+button{border-left:1px solid rgba(0,0,0,.15);font-weight:600}
+
+/* dark mode — an approximation: no dark frames were supplied */
+.phone-in.dark{--ep-bg:#11161D;--ep-card:#1A222C;--ep-line:#39434F;--ep-line2:#2A333E;--ep-ink:#E8EEF4;--ep-txt:#AAB5C2;--ep-muted:#7F8B99;
+  --ep-tint:#13314A;--ep-reader:#0C1117;--ep-blue-soft:#1C4563;background:var(--ep-bg)}
+.phone-in.dark .screenwrap{background:var(--ep-bg)}
+.phone-in.dark .ep-h,.phone-in.dark .ep-bh,.phone-in.dark .ep-dh,.phone-in.dark .ep-gtitle,.phone-in.dark .ep-pwh,.phone-in.dark .ep-th{color:#43B2F2}
+.phone-in.dark .ep-sel select,.phone-in.dark .ep-in,.phone-in.dark .ep-rcard,.phone-in.dark .ep-rcard2,.phone-in.dark .ep-plan:not(.on),
+.phone-in.dark .ep-sb,.phone-in.dark .ep-fav{background:var(--ep-card)}
+.phone-in.dark .ep-sel svg{fill:var(--ep-ink)}
+.phone-in.dark .ep-sb{border-color:#56616F}
+.phone-in.dark .ep-sb .apl{fill:#fff}
+.phone-in.dark .ep-plan:not(.on){box-shadow:none;border-color:var(--ep-line2)}
+.phone-in.dark .ep-ts::before{background:#35404C}
+.phone-in.dark .ep-ts:first-child::before{background:linear-gradient(180deg,var(--ep-green),#35404C)}
+.phone-in.dark .ep-ti{background:#4B5663}
+.phone-in.dark .ep-ts:first-child .ep-ti{background:var(--ep-green)}
+.phone-in.dark .ep-cov{background:#222B35}
+.phone-in.dark .ep-rfor{color:#7CCBF7}
+.phone-in.dark .ep-cr>div:last-child small{color:#7CCBF7}
+.phone-in.dark .ep-alert{background:rgba(44,44,48,.97)}
+.phone-in.dark .ep-alert h5,.phone-in.dark .ep-alert p{color:#F2F2F2}
+.phone-in.dark .ep-alert div,.phone-in.dark .ep-alert button+button{border-color:rgba(255,255,255,.16)}
+.phone-in.dark .ep-alert button{color:#3E9BFF}
+.phone-in.dark .ep-dim{background:rgba(0,0,0,.55)}
+.phone-in.dark .scr--welcome,.phone-in.dark .scr--load{background:#0A6FAE}
+.phone-in.dark .ep-wbtn{background:#11161D;color:#43B2F2}
+.phone-in.dark .ep-rbar{background:#0A6FAE}
+.phone-in.dark .ep-pchip .apl{fill:#fff}
+
+/* prototype toolbar, walkthrough, QR */
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px}
+.seg{display:inline-flex;align-items:center;background:#fff;border:1px solid #DCE4EC;border-radius:20px;padding:3px;gap:2px}
+.seg button{padding:6px 11px;border-radius:16px;font:600 12px/1 'Plus Jakarta Sans','PingFang SC',sans-serif;color:var(--ink2);transition:.14s}
+.seg button.on{background:var(--ink);color:#fff}
+.demo-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:20px;background:var(--accent);color:#fff;
+  font:700 12px/1 'Plus Jakarta Sans',sans-serif}
+.demo-cap{width:390px;max-width:calc(100vw - 24px);background:#fff;border:1px solid var(--hair);border-radius:16px;padding:14px 14px 12px;
+  display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(35,49,73,.07)}
+.demo-cap .bar{position:absolute;left:0;top:0;right:0;height:3px;background:#EAF0F5}
+.demo-cap .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s linear}
+.demo-cap p{flex:1;font-size:13.5px;line-height:1.45;color:var(--ink);margin:0;font-weight:500}
+.demo-cap button{font:700 12px/1 'Plus Jakarta Sans',sans-serif;color:var(--ink2);padding:7px 10px;border-radius:12px;border:1px solid #DCE4EC;flex:none}
+.finger{position:absolute;z-index:90;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(35,49,73,.26);
+  border:2px solid rgba(255,255,255,.95);box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none;opacity:0;left:50%;top:60%;
+  transition:left .32s cubic-bezier(.4,0,.2,1),top .32s cubic-bezier(.4,0,.2,1),opacity .2s,transform .15s}
+.finger.show{opacity:1}
+.finger.press{transform:scale(.78);background:rgba(35,49,73,.4)}
+.qr{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--hair);border-radius:16px;padding:10px 16px 10px 10px;text-align:left}
+.qr img{width:123px;height:123px;display:block;image-rendering:pixelated;border-radius:6px}
+.qr span{font-size:12.5px;line-height:1.45;color:var(--ink2)}
+.qr b{display:block;color:var(--ink);font-size:13.5px}
+@media(max-width:1080px){.qr{display:none}}
+
+#view-proto .tools{order:0} #view-proto .demo-cap{order:1} #view-proto .phone{order:2} #view-proto .chips{order:3}
+#view-proto .chiphint{order:4} #view-proto .qr{order:5}
+.cta-row .qr{order:2}
+/* on a phone: the prototype is the screen */
+@media(max-width:500px){
+  #view-proto .phonecol{padding:0 0 28px;gap:14px}
+  #view-proto .phone{width:100vw;height:calc(100svh - 58px);min-height:640px;border:0;border-radius:0;box-shadow:none;order:1}
+  #view-proto .phone-in{border-radius:0}
+  #view-proto .island,#view-proto .sbar,#view-proto .homebar{display:none}
+  #view-proto .scr-top{padding-top:16px}
+  #view-proto .scr-foot{padding-bottom:18px}
+  #view-proto .scr--welcome .scr-top{padding-top:22px}
+  #view-proto .scr--pw .scr-top,#view-proto .scr--offer .scr-top{padding-top:12px}
+  #view-proto .ep-rbar{padding-top:14px}
+  #view-proto .ep-th{margin-top:140px}
+  #view-proto .tools{order:3;padding:0 12px}
+  #view-proto .demo-cap{position:fixed;left:12px;right:12px;bottom:12px;width:auto;max-width:none;z-index:95}
+  #view-proto .chips{order:4;padding:0 12px}
+  #view-proto .chiphint{order:5}
+}
+
+/* overview: walkthrough button */
+.herobtns{display:flex;justify-content:center;margin-top:30px}
+.ghostbtn{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--hair2);color:var(--ink);font-size:14px;
+  font-weight:700;padding:9px 20px 9px 9px;border-radius:30px;box-shadow:0 2px 12px rgba(35,49,73,.06);transition:.16s}
+.ghostbtn:hover{box-shadow:0 4px 18px rgba(35,49,73,.1)}
+.ghostbtn .pl{width:30px;height:30px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
+.ghostbtn .pl svg{width:12px;height:12px;fill:#fff;margin-left:2px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:470px;margin:0 auto}
+.chip{padding:7px 13px;border-radius:20px;border:1px solid #DCE4EC;background:#fff;
+  font:600 12px/1 'Plus Jakarta Sans',sans-serif;color:var(--ink2);transition:.14s}
+.chip:hover{color:var(--ink);border-color:#C3CFDA}
+.chip.offer{border-style:dashed;border-color:var(--accent);color:var(--accent-text)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;border-style:solid}
+.chiphint{text-align:center;font-size:11px;color:var(--ink3);margin:0;max-width:430px}
+
+/* ============ the short panel ============ */
+.pn{padding:30px 30px 60px}
+.pn-n{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
+.pn-n.ctx{color:var(--panel-muted)}
+.pn-t{font-size:23px;line-height:1.18;font-weight:700;letter-spacing:-.028em;margin:8px 0 0;color:var(--panel-ink)}
+.pn-hyp{font-size:15px;line-height:1.62;color:#2E3945;margin:16px 0 0}
+.pn-hyp b{font-weight:700;color:var(--panel-ink)}
+.pn-out{margin-top:22px;border-top:1px solid var(--panel-line);padding-top:18px}
+.pn-out .lab{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--panel-muted)}
+.pn-out .v{font-size:31px;font-weight:800;letter-spacing:-.035em;color:var(--accent-ink);margin-top:7px;line-height:1.1}
+.pn-kept{margin-top:22px;font-size:12.5px;line-height:1.55;color:var(--panel-muted)}
+.pn-kept b{color:#2E3945;font-weight:700}
+.pn-foot{font-size:11.5px;line-height:1.55;color:var(--panel-muted);border-top:1px solid var(--panel-line);
+  padding-top:14px;margin-top:26px}
+.pn-sep{height:1px;background:var(--panel-line);margin:26px 0}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-in">
+    <div class="nav-brand">
+      <span class="mk"><img src="img/icon.png" alt="Epic"></span>
+      <b>Growth Audit</b><span>· Epic</span>
+    </div>
+    <div class="nav-links">
+      <button class="on" data-view="over">Overview</button>
+      <button data-view="proto">Prototype</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= OVERVIEW ======================= -->
+<div class="view on" id="view-over">
+
+<div class="hero">
+  <div class="wrap">
+    <!-- month + year = the day you build, not this file --><div class="eyebrow">Growth Audit · September 2026</div>
+    <h1>Epic</h1>
+    <p class="lede">Five ideas to unlock more revenue from the traffic you already have.</p>
+    <div class="meta">Prepared by <b>Adapty</b> · based on your live iOS flow and your App Store listing</div>
+    <div class="herobtns"><button class="ghostbtn" data-demo><span class="pl"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span>Watch the 30-second walkthrough</button></div>
+    <div class="stats">
+      <div class="stat"><b>30,000+</b><span>apps run subscriptions<br>on Adapty</span></div>
+      <div class="stat"><b>5</b><span>ideas, each rebuilt<br>as a working screen</span></div>
+      <div class="stat"><b>0</b><span>design changes<br>to your art direction</span></div>
+    </div>
+
+    <div class="fb">
+      <div class="fb-k">Built in Adapty Flow Builder</div>
+      <div class="fb-i">
+        <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p><b>Millions of dollars</b> in subscription revenue pass through Flow Builder every month.</p>
+      </div>
+      <div class="fb-i">
+        <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p><b>Nearly 500 apps</b> actively build their paywalls and onboarding in it — plenty of them past $100K MRR.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="wrap">
+    <div class="sec-k">What this is</div>
+    <h2>We opened Epic the way a new parent does, then rebuilt the parts we think are leaving money on the table.</h2>
+    <p class="body">Adapty powers subscriptions for <b>30,000+ apps</b>, so we get to see what actually moves conversion and ARPU across the market rather than inside one app. We pointed that at Epic: installed it, went through the first screens as a family, read your App Store listing and getepic.com, and looked for gaps between what you already have and what you currently show parents.</p>
+    <p class="body">What follows is five ideas — not fifteen. Each one is a hypothesis you can A/B test, and each one is built into a clickable prototype so you can see it rather than imagine it. <b>The prototype uses your design, not ours.</b></p>
+
+    <div class="notes">
+      <div class="note">
+        <h4>We did not redesign your app</h4>
+        <p>Every screen in the prototype is yours — your blue, your birth-year keypad, your first-book grid, your book page, your plan cards and trial timeline. Only the order changed, plus a few things you already own but do not show at the right moment. This is not a design pitch.</p>
+      </div>
+      <div class="note">
+        <h4>You may have tested some of this</h4>
+        <p>We are working from the outside, so we cannot see your experiment history. If one of these is something you have already run, tell us — we will go deeper on the rest rather than repeat it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rule"></div>
+
+<div class="sec">
+  <div class="wrap">
+    <div class="sec-k">The five ideas</div>
+    <h2>Ranked by what we would test first.</h2>
+    <p class="body">Each one links straight to the screen in the prototype.</p>
+
+    <div class="ideas">
+      <button class="idea" data-jump="account">
+        <span class="no">01</span>
+        <span>
+          <h3>Create the account after the trial starts</h3>
+          <p>Right now the second screen asks for Apple, Google, Facebook or an email and a password, before a parent has seen a single book. The account matters for syncing devices. It should not be the first thing a family decides.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +8%</b><b>ARPU +17%</b><span>sign-up moved</span></span>
+      </button>
+
+      <button class="idea" data-jump="books">
+        <span class="no">02</span>
+        <span>
+          <h3>Let them pick the first book before the price</h3>
+          <p>Your child’s age, first book and name all come after the trial has started today. Asked before the plan screen, those three taps build a shelf with the child’s name on it. Your own “Let’s find a first book to read together!” screen already does the work.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–20%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="paywall">
+        <span class="no">03</span>
+        <span>
+          <h3>Put the child and their book on the plan screen</h3>
+          <p>“Choose an Epic Family plan” reads the same for every parent. Once they have picked a book for Nick, the headline, the Today step of your trial timeline and the button can all say so.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +15–20%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="paywall">
+        <span class="no">04</span>
+        <span>
+          <h3>Show your 4.7 and Editors’ Choice where parents pay</h3>
+          <p>Your 4.7 from 519K ratings and Apple Editors’ Choice appear nowhere between install and the plan screen. Neither does your own line that 95% of Epic parents say Epic helped their child’s reading.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–15%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="offer">
+        <span class="no">05</span>
+        <span>
+          <h3>Give a second chance when they close</h3>
+          <p>We found no close button on the plan screen and nothing behind a no. A parent who is not ready for 93,99 € a year leaves with nothing. Offer your 12,99 € monthly plan with the same free week, next to what Epic Family adds over Epic at school.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>ARPU +10–15%</b><span>second chance</span></span>
+      </button>
+    </div>
+
+    <div class="band">
+      <div class="txt">
+        <div class="lab">Potential outcome</div>
+        <p>Run together, these five move the same funnel at three points — what a parent does before the price, what the plan screen says, and what happens when someone says no.</p>
+      </div>
+      <div class="nums">
+        <div><b>+25%</b><span>CR to purchase</span></div>
+        <div><b>+30%</b><span>ARPU</span></div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <div class="qr"><img src="img/qr.svg?v=1" alt="QR code for the prototype"><span><b>Or open it on your phone</b>Scan to try the flow in your hand.</span></div>
+      <button class="bigbtn" data-view="proto">Open the prototype
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="wrap">
+    Impact ranges are Adapty's expected effect from teardowns and A/B tests across subscription apps — not measured lift for Epic. Every price, rating, quote, book and feature line here and in the prototype comes from Epic’s own App Store listing, getepic.com and in-app screens.
+  </div>
+</div>
+</div><!-- /view-over -->
+
+<!-- ======================= PROTOTYPE ======================= -->
+<div class="view" id="view-proto">
+<div class="stage">
+  <div class="phonecol">
+    <div class="tools" id="tools">
+      <div class="seg" id="segLang"><button data-lang="en" class="on">EN</button><button data-lang="es">ES</button><button data-lang="zh">中文</button></div>
+      <div class="seg" id="segTheme"><button data-theme="light" class="on">Light</button><button data-theme="dark">Dark</button></div>
+      <button class="demo-btn" id="demoBtn"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>30-sec walkthrough</button>
+    </div>
+    <div class="phone">
+      <div class="phone-in" id="phoneIn">
+        <div class="island"></div>
+        <div class="sbar" id="sbar">
+          <span>9:41</span>
+          <span class="glyphs">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.5" y="5.5" width="3" height="5.5" rx="1"/><rect x="9" y="3" width="3" height="8" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 10.5 5.6 7.9a3.4 3.4 0 0 1 4.8 0L8 10.5Zm0-5.6a6.4 6.4 0 0 0-4.5 1.9L1.7 4.9a9 9 0 0 1 12.6 0l-1.8 1.9A6.4 6.4 0 0 0 8 4.9Z"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".6" y=".6" width="20" height="10.8" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="2.2" y="2.2" width="16.5" height="7.6" rx="1.8" fill="currentColor"/><path d="M22.3 4.1v3.8a2 2 0 0 0 0-3.8Z" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+        <div class="homebar" id="homebar"></div>
+        <div class="finger" id="finger"></div>
+        <div class="screenwrap">
+
+<!-- WELCOME -->
+<section class="scr scr--welcome" data-id="welcome" data-light="1">
+  <div class="scr-top">
+    <img class="ep-wlogo" src="img/epic-logo.svg" alt="epic!">
+    <h2 class="ep-wh" data-t="wel.h"></h2>
+    <p class="ep-ws" data-t="wel.s"></p>
+  </div>
+  <div class="scr-body"><img class="ep-wart" src="img/welcome-kid.png" alt=""></div>
+  <div class="scr-foot">
+    <button class="ep-wbtn" data-go="gate" data-t="wel.cta"></button>
+    <span class="ep-wl" data-t="wel.edu"></span>
+    <span class="ep-wl" data-t="wel.stu"></span>
+    <span class="ep-wl login" data-th="wel.login"></span>
+    <div class="ep-dots"><i class="on"></i><i></i><i></i></div>
+  </div>
+</section>
+
+<!-- VERIFY AGE -->
+<section class="scr" data-id="gate">
+  <div class="scr-top">
+    <div class="ep-nav">
+      <span style="width:36px"></span>
+      <h2 class="ep-gtitle" data-t="gate.h"></h2>
+      <button class="ep-x" data-back aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <p class="ep-yp" data-t="gate.p"></p>
+    <div class="ep-boxes" id="yBoxes"><span></span><span></span><span></span><span></span></div>
+    <p class="ep-yerr" id="yErr"></p>
+  </div>
+  <div class="scr-body">
+    <div class="ep-pad" id="pad"></div>
+  </div>
+  <div class="scr-foot"></div>
+</section>
+
+<!-- DATA PRACTICES -->
+<section class="scr" data-id="data">
+  <div class="scr-top"><h2 class="ep-dh" data-t="data.h"></h2></div>
+  <div class="scr-body"><ul class="ep-dlist" id="dataList"></ul></div>
+  <div class="scr-foot"><button class="ep-btn" data-go="books" data-t="data.cta"></button></div>
+</section>
+
+<!-- FIRST BOOK -->
+<section class="scr" data-id="books">
+  <div class="scr-top">
+    <h2 class="ep-bh" data-t="bk.h"></h2>
+    <p class="ep-cp" data-t="bk.p"></p>
+    <div class="ep-sel"><select id="ageSel" aria-label="Age"></select><svg viewBox="0 0 16 12"><path d="M0 0h16L8 11z"/></svg></div>
+  </div>
+  <div class="scr-body"><div class="ep-grid" id="bookGrid"></div></div>
+</section>
+
+<!-- CHILD NAME -->
+<section class="scr" data-id="name">
+  <div class="scr-top">
+    <div class="ep-nav"><button class="ep-back" data-back aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M11 5l-7 7 7 7"/></svg></button></div>
+  </div>
+  <div class="scr-body">
+    <div class="ep-ncov"><img id="nameCov" src="img/c80131.webp" alt=""></div>
+    <h2 class="ep-h" style="margin-top:18px" data-t="nm.h"></h2>
+    <p class="ep-sub" data-t="nm.s"></p>
+    <p class="ep-nl" data-t="nm.l"></p>
+    <input class="ep-in" id="nameIn" maxlength="16" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="scr-foot"><button class="ep-btn" id="nameBtn" data-go="loader" data-t="cont"></button></div>
+</section>
+
+<!-- LOADER -->
+<section class="scr scr--load" data-id="loader" data-light="1">
+  <div class="scr-top" style="padding-top:0"></div>
+  <div class="scr-body">
+    <div class="ep-loadwrap">
+      <img class="ep-llogo" src="img/epic-logo.svg" alt="">
+      <div class="ep-lbar"><i id="lbar"></i></div>
+      <h2 class="ep-lh" id="loadH"></h2>
+      <div class="ep-lsteps" id="loadSteps">
+        <div class="ep-ls"><span class="d"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="t">—</span></div>
+        <div class="ep-ls"><span class="d"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="t">—</span></div>
+        <div class="ep-ls"><span class="d"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="t">—</span></div>
+        <div class="ep-ls"><span class="d"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="t">—</span></div>
+      </div>
+      <div class="ep-quote"><p id="qText">—</p><b id="qWho">—</b></div>
+      <div class="ep-qd" id="qDots"><i class="on"></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
+  <div class="scr-foot"></div>
+</section>
+
+<!-- PAYOFF: their book page -->
+<section class="scr scr--pay0" data-id="payoff" data-light="1">
+  <div class="ep-rbar">
+    <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3" fill="#fff"/><circle cx="12" cy="12" r="1.3" fill="#fff"/><circle cx="19" cy="12" r="1.3" fill="#fff"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M4 19h16"/></svg>
+    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+    <span class="sp"></span>
+    <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </div>
+  <div class="scr-body">
+    <div class="ep-rcard">
+      <div class="ep-rcov"><img id="payCov" src="img/c80131.webp" alt=""></div>
+      <div class="ep-rt" id="payTitle"></div>
+      <span class="ep-rfor" id="payFor"></span>
+      <button class="ep-btn" data-go="paywall" data-t="po.cta"></button>
+      <button class="ep-fav" id="favBtn"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg><span data-t="po.fav"></span></button>
+    </div>
+    <div class="ep-rcard2">
+      <div class="ep-rk" id="nextLab"></div>
+      <div class="ep-next" id="nextRow"></div>
+      <p class="ep-more" data-t="po.more"></p>
+    </div>
+    <div class="ep-rcard2" style="margin-bottom:14px">
+      <div class="ep-rk" id="valLab"></div>
+      <div class="ep-vrow"><i style="background:var(--ep-pink)"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i><span data-t="po.v1"></span></div>
+      <div class="ep-vrow"><i style="background:var(--ep-blue)"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i><span data-t="po.v2"></span></div>
+      <div class="ep-vrow"><i style="background:var(--ep-green)"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i><span data-t="po.v3"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN SCREEN -->
+<section class="scr scr--pw" data-id="paywall">
+  <div class="scr-top">
+    <div class="ep-pwnav"><button class="ep-x" id="payClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  </div>
+  <div class="scr-body">
+    <h2 class="ep-pwh" id="payH"></h2>
+    <p class="ep-pws" data-t="pw.sub"></p>
+    <div class="ep-proof">
+      <span class="ep-pchip"><span class="st">★★★★★</span>4.7 · <span data-t="pw.ratings"></span></span>
+      <span class="ep-pdiv"></span>
+      <span class="ep-pchip"><svg viewBox="0 0 24 24"><path class="apl" fill="#111" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.9-.9-3.1-.8c-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.4-1-2.4-3.8ZM14.2 5.8c.6-.8 1.1-1.8 1-2.8-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.7-1 2.7 1 .1 2-.5 2.7-1.3Z"/></svg><span data-t="pw.ec"></span></span>
+    </div>
+    <p class="ep-p95" data-th="pw.p95"></p>
+    <div class="ep-plans" id="planList">
+      <button class="ep-plan" data-v="year">
+        <span class="ep-save" data-t="pw.save"></span>
+        <span class="ep-prow">
+          <span><span class="ep-pn" data-t="pw.annual"></span><span class="ep-pt" data-t="pw.trial"></span></span>
+          <span class="ep-pp">93,99 €<small data-t="pw.permo"></small></span>
+        </span>
+        <span class="ep-tl" id="tlYear"></span>
+      </button>
+      <button class="ep-plan" data-v="month">
+        <span class="ep-prow">
+          <span><span class="ep-pn" data-t="pw.monthly"></span><span class="ep-pt" data-t="pw.trial"></span></span>
+          <span class="ep-pp">12,99 €</span>
+        </span>
+        <span class="ep-tl" id="tlMonth"></span>
+      </button>
+    </div>
+  </div>
+  <div class="scr-foot">
+    <button class="ep-btn" id="payCta"></button>
+    <p class="ep-after" id="payAfter"></p>
+  </div>
+</section>
+
+<!-- OFFER ON CLOSE -->
+<section class="scr scr--offer sheet" data-id="offer">
+  <div class="scr-top">
+    <div class="ep-pwnav"><button class="ep-x" id="offClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  </div>
+  <div class="scr-body">
+    <h2 class="ep-pwh" id="offH"></h2>
+    <p class="ep-pws" id="offS"></p>
+    <div class="ep-cmp">
+      <div class="ep-cr hd"><div data-t="of.c0a"></div><div data-t="of.c0b"></div></div>
+      <div class="ep-cr"><div><small data-t="of.k1"></small><span data-t="of.a1"></span></div><div><small data-t="of.k1"></small><span data-t="of.b1"></span></div></div>
+      <div class="ep-cr"><div><small data-t="of.k2"></small><span data-t="of.a2"></span></div><div><small data-t="of.k2"></small><span data-t="of.b2"></span></div></div>
+      <div class="ep-cr"><div><small data-t="of.k3"></small><span data-t="of.a3"></span></div><div><small data-t="of.k3"></small><span data-t="of.b3"></span></div></div>
+    </div>
+    <div class="ep-ocard">
+      <div class="ep-plan on" style="cursor:default">
+        <span class="ep-prow">
+          <span><span class="ep-pn" data-t="pw.monthly"></span><span class="ep-pt" data-t="pw.trial"></span></span>
+          <span class="ep-pp">12,99 €<small data-t="of.cancel"></small></span>
+        </span>
+        <span class="ep-tl" id="tlOffer"></span>
+      </div>
+    </div>
+    <div style="height:10px"></div>
+  </div>
+  <div class="scr-foot">
+    <button class="ep-btn" id="offerCta" data-t="pw.ctaGen"></button>
+    <p class="ep-after" data-t="of.after"></p>
+  </div>
+</section>
+
+<!-- ACCOUNT (moved past the paywall) -->
+<section class="scr" data-id="account">
+  <div class="scr-top">
+    <div class="ep-nav"><span style="height:36px"></span></div>
+    <h2 class="ep-h" data-t="ac.h"></h2>
+    <p class="ep-sub" id="acSub"></p>
+  </div>
+  <div class="scr-body">
+    <div class="ep-soc">
+      <button class="ep-sb" data-go="trial"><svg viewBox="0 0 24 24"><path class="apl" fill="#111" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.9-.9-3.1-.8c-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.4-1-2.4-3.8ZM14.2 5.8c.6-.8 1.1-1.8 1-2.8-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.7-1 2.7 1 .1 2-.5 2.7-1.3Z"/></svg><span data-t="ac.apple"></span></button>
+      <button class="ep-sb" data-go="trial"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3Z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9.1L6.4 14Z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6Z"/></svg><span data-t="ac.google"></span></button>
+      <button class="ep-sb" data-go="trial"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1877F2"/><path fill="#fff" d="M13.4 21.9v-7h2.3l.4-2.7h-2.7v-1.7c0-.8.4-1.5 1.6-1.5h1.2V6.6s-1.1-.2-2.1-.2c-2.2 0-3.6 1.3-3.6 3.7v2.1H8.1v2.7h2.4v7h2.9Z"/></svg><span data-t="ac.fb"></span></button>
+      <button class="ep-sb" data-go="trial"><svg viewBox="0 0 24 24" fill="none" stroke="#3B4452" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span data-t="ac.email"></span></button>
+    </div>
+  </div>
+  <div class="scr-foot"><span class="ep-signin" data-t="ac.signin"></span></div>
+</section>
+
+<!-- TRIAL STARTED -->
+<section class="scr scr--trial" data-id="trial">
+  <div class="scr-top"></div>
+  <div class="scr-body">
+    <h2 class="ep-th" data-t="tr.h"></h2>
+    <p class="ep-tp" data-t="tr.p"></p>
+  </div>
+  <div class="scr-foot">
+    <button class="ep-btn" id="remindBtn" data-t="tr.cta"></button>
+    <button class="ep-link" id="maybeBtn" data-t="tr.no"></button>
+  </div>
+  <div class="ep-dim" id="sysAlert">
+    <div class="ep-alert">
+      <h5 data-t="tr.aH"></h5>
+      <p data-t="tr.aP"></p>
+      <div><button data-go="welcome" data-t="tr.aNo"></button><button data-go="welcome" data-t="tr.aYes"></button></div>
+    </div>
+  </div>
+</section>
+
+        </div>
+      </div>
+    </div>
+    <div class="demo-cap hidden" id="demoCap"><div class="bar"><i id="demoProg"></i></div><p id="demoTxt"></p><button id="demoStop">Stop</button></div>
+    <div class="chips" id="chips"></div>
+    <p class="chiphint">Jump to any screen — answers already filled in.</p>
+    <div class="qr"><img src="img/qr.svg?v=1" alt="QR code for this prototype"><span><b>Open it on your phone</b>Scan to try the flow in your hand.</span></div>
+  </div>
+  <div class="panelcol"><div class="pn" id="panel"></div></div>
+</div>
+</div><!-- /view-proto -->
+
+<script>
+/* ================= copy, per language (phone screens only) ================= */
+var LANGS = ['en','es','zh'];
+var T = {
+ 'wel.h':   ["Inspire a lifelong love of reading.","Inspira un amor por la lectura para toda la vida.","点燃孩子一生的阅读热爱。"],
+ 'wel.s':   ["Get them hooked on books with 40,000+ titles at their fingertips.","Engánchalos a los libros con más de 40.000 títulos a su alcance.","40,000+ 本好书，触手可及，让孩子爱上读书。"],
+ 'wel.cta': ["Families, Start Reading","Familias, a leer","家庭用户，开始阅读"],
+ 'wel.edu': ["Educators","Docentes","教育工作者"],
+ 'wel.stu': ["Students","Estudiantes","学生"],
+ 'wel.login':["Have an account? <b>Log In</b>","¿Ya tienes cuenta? <b>Inicia sesión</b>","已有账号？<b>登录</b>"],
+ 'cont':    ["Continue","Continuar","继续"],
+ 'gate.h':  ["Verify Age","Verifica tu edad","验证年龄"],
+ 'gate.p':  ["Please enter your birth year.","Introduce tu año de nacimiento.","请输入你的出生年份。"],
+ 'gate.bad':["Please ask a grown-up to continue.","Pide a un adulto que continúe.","请让家长继续操作。"],
+ 'data.h':  ["About Our Data Protection Practices","Sobre nuestras prácticas de protección de datos","关于我们的数据保护措施"],
+ 'data.cta':["I Agree","Acepto","我同意"],
+ 'bk.h':    ["Let’s find a first book to read together!","¡Busquemos un primer libro para leer juntos!","一起挑第一本书吧！"],
+ 'bk.p':    ["Choose a popular book for","Elige un libro popular para","为这个年龄挑一本热门书"],
+ 'bk.age':  ["{n} year-olds","{n} años","{n} 岁"],
+ 'nm.h':    ["Great choice! One last step to start reading.","¡Buena elección! Un último paso para empezar a leer.","选得好！开始阅读前还有最后一步。"],
+ 'nm.s':    ["Tell us your child’s name so we can personalize their experience.","Dinos el nombre de tu hijo para personalizar su experiencia.","告诉我们孩子的名字，我们会为他/她量身定制。"],
+ 'nm.l':    ["Child’s Name","Nombre del niño","孩子的名字"],
+ 'ld.h':    ["Building {n}’s bookshelf…","Preparando la estantería de {n}…","正在为{n}整理书架…"],
+ 'ld.1':    ["Picking popular books for {a}","Eligiendo libros populares para {a}","挑选适合{a}的热门书"],
+ 'ld.2':    ["Putting {b} first","Poniendo primero {b}","把《{b}》放在第一位"],
+ 'ld.3':    ["Adding Read-To-Me books and audiobooks","Añadiendo libros leídos en voz alta y audiolibros","加入“读给我听”绘本和有声书"],
+ 'ld.4':    ["Setting up {n}’s reading profile","Creando el perfil de lectura de {n}","创建{n}的阅读档案"],
+ 'po.for':  ["Picked by {n} · {a}","Elegido por {n} · {a}","{n}选的 · {a}"],
+ 'po.cta':  ["Start Reading!","¡Empezar a leer!","开始阅读！"],
+ 'po.fav':  ["Favorite","Favorito","收藏"],
+ 'po.next': ["Up next on {n}’s shelf","Lo siguiente en la estantería de {n}","{n}书架上的下一本"],
+ 'po.more': ["…and 40,000+ more books, audiobooks & videos.","…y más de 40.000 libros, audiolibros y vídeos.","…还有 40,000+ 本图书、有声书和视频。"],
+ 'po.val':  ["With Epic Family, {n} also gets","Con Epic Family, {n} también tiene","有了 Epic Family，{n}还能享受"],
+ 'po.v1':   ["Access to 40,000+ books, videos & audiobooks.","Acceso a más de 40.000 libros, vídeos y audiolibros.","畅读 40,000+ 本图书、视频和有声书。"],
+ 'po.v2':   ["Parent tools let you track your kid’s progress.","Herramientas para seguir el progreso de tu hijo.","家长工具，随时了解孩子的进步。"],
+ 'po.v3':   ["Reading Buddies and badges bring the fun.","Reading Buddies e insignias hacen que sea divertido.","阅读伙伴和徽章，让阅读更有趣。"],
+ 'pw.h':    ["Choose an Epic Family plan for {n}.","Elige un plan Epic Family para {n}.","{n}的 Epic Family 方案"],
+ 'pw.sub':  ["Enjoy anytime access to 40,000+ books, videos & audiobooks.","Disfruta en cualquier momento de más de 40.000 libros, vídeos y audiolibros.","随时畅享 40,000+ 本图书、视频和有声书。"],
+ 'pw.ratings':["519K ratings","519K notas","51.9万评分"],
+ 'pw.ec':   ["Editors’ Choice","Elección editorial","编辑推荐"],
+ 'pw.p95':  ["<b>95% of Epic parents</b> say Epic helped improve their child’s reading skills.","<b>El 95% de los padres de Epic</b> dice que Epic ayudó a mejorar la lectura de su hijo.","<b>95% 的 Epic 家长</b>表示 Epic 帮助提高了孩子的阅读能力。"],
+ 'pw.save': ["SAVE 44%","AHORRA 44%","省 44%"],
+ 'pw.annual':["Annual","Anual","年度"],
+ 'pw.monthly':["Monthly","Mensual","月度"],
+ 'pw.trial':["+ 7-Day Free Trial","+ 7 días de prueba gratis","+ 7 天免费试用"],
+ 'pw.permo':["7,83 €/month","7,83 €/mes","7,83 €/月"],
+ 'tl.t':    ["Today","Hoy","今天"],
+ 'tl.td':   ["{n} starts reading {b} for free.","{n} lee {b} gratis.","{n}免费开始读《{b}》。"],
+ 'tl.5':    ["Day 5","Día 5","第 5 天"],
+ 'tl.5d':   ["We’ll remind you that your free trial is ending.","Te avisamos de que tu prueba termina.","我们会提醒你免费试用即将结束。"],
+ 'tl.7':    ["Day 7","Día 7","第 7 天"],
+ 'tl.7y':   ["You’ll be charged on {d} for 1 year, cancel anytime before.","Cobro el {d} (1 año); cancela antes si quieres.","将于{d}扣费（1 年），之前可随时取消。"],
+ 'tl.7m':   ["You’ll be charged on {d} for 1 month, cancel anytime before.","Cobro el {d} (1 mes); cancela antes si quieres.","将于{d}扣费（1 个月），之前可随时取消。"],
+ 'pw.cta':  ["Start {n}’s 7-Day Free Trial","Empezar la prueba de 7 días de {n}","开始{n}的 7 天免费试用"],
+ 'pw.ctaGen':["Start your 7-Day Free Trial","Empieza tu prueba gratis de 7 días","开始 7 天免费试用"],
+ 'pw.afterY':["After first 7 days, pay 93,99 € annually","Tras 7 días, 93,99 € al año","7 天后按年支付 93,99 €"],
+ 'pw.afterM':["After first 7 days, pay 12,99 € monthly","Tras 7 días, 12,99 € al mes","7 天后按月支付 12,99 €"],
+ 'of.h':    ["Not ready for a whole year?","¿Un año es mucho?","还不想一次订一年？"],
+ 'of.s':    ["Start {n} on one month. Same free week, cancel anytime.","Un mes para {n}, con la misma semana gratis.","先为{n}订一个月。同样免费一周，随时可取消。"],
+ 'of.c0a':  ["Epic at school","Epic en el cole","学校里的 Epic"],
+ 'of.c0b':  ["Epic Family at home","Epic Family en casa","在家用 Epic Family"],
+ 'of.k1':   ["When","Cuándo","时间"],
+ 'of.a1':   ["Weekdays, 7am–4pm","Días lectivos, 7–16 h","工作日 7:00–16:00"],
+ 'of.b1':   ["Any time, any day","Cuando quieras","每天，随时"],
+ 'of.k2':   ["Where","Dónde","地点"],
+ 'of.a2':   ["In class","En clase","课堂上"],
+ 'of.b2':   ["Any Apple device, even offline","Todo dispositivo Apple, sin conexión","任何苹果设备，离线也能读"],
+ 'of.k3':   ["Progress","Progreso","进度"],
+ 'of.a3':   ["Tracked by the teacher","Lo sigue el profesor","由老师跟进"],
+ 'of.b3':   ["Weekly updates for you","Resumen semanal","每周发给你的进度报告"],
+ 'of.cancel':["cancel anytime","cancela cuando quieras","随时取消"],
+ 'of.after':["After first 7 days, pay 12,99 € monthly. Cancel anytime.","Tras 7 días, 12,99 € al mes. Cancela cuando quieras.","7 天后按月支付 12,99 €，随时可取消。"],
+ 'ac.h':    ["Create Your Account","Crea tu cuenta","创建账号"],
+ 'ac.s':    ["Save {n}’s shelf so it follows you to every device.","Guarda la estantería de {n} en todos tus dispositivos.","保存{n}的书架，在所有设备上同步。"],
+ 'ac.apple':["Continue with Apple","Continuar con Apple","通过 Apple 继续"],
+ 'ac.google':["Continue with Google","Continuar con Google","通过 Google 继续"],
+ 'ac.fb':   ["Continue with Facebook","Continuar con Facebook","通过 Facebook 继续"],
+ 'ac.email':["Sign up with Email","Registrarse con email","使用邮箱注册"],
+ 'ac.signin':["Have an account? Sign In","¿Ya tienes cuenta? Inicia sesión","已有账号？登录"],
+ 'tr.h':    ["Your trial has started!","¡Tu prueba ha empezado!","试用已开始！"],
+ 'tr.p':    ["Allow notifications and we’ll remind you when your free trial is ending. Plus get weekly fun facts and activities!","Activa las notificaciones y te avisaremos cuando termine tu prueba gratis. ¡Y recibe datos curiosos y actividades cada semana!","开启通知，免费试用结束前我们会提醒你。还有每周趣味知识和活动！"],
+ 'tr.cta':  ["Remind","Recordarme","提醒我"],
+ 'tr.no':   ["Maybe","Quizás","以后再说"],
+ 'tr.aH':   ["“Epic!” Would Like to Send You Notifications","“Epic!” quiere enviarte notificaciones","“Epic!”想给你发送通知"],
+ 'tr.aP':   ["Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.","Las notificaciones pueden incluir alertas, sonidos e indicadores. Puedes configurarlas en Ajustes.","通知可能包括提醒、声音和图标标记。可在“设置”中配置。"],
+ 'tr.aNo':  ["Don’t Allow","No permitir","不允许"],
+ 'tr.aYes': ["Allow","Permitir","允许"]
+};
+var DATA = [
+ ["Child’s name or nickname, age, that you provide.","Nombre o apodo del niño y edad, que tú nos das.","你提供的孩子姓名或昵称、年龄。"],
+ ["Device information to access Epic & information about your child’s use of Epic. Epic does not ask your child to provide any other information, and we do not permit your child to share personal information with others through Epic.","Información del dispositivo para acceder a Epic e información sobre el uso que tu hijo hace de Epic. Epic no pide a tu hijo ningún otro dato y no le permite compartir información personal con otros a través de Epic.","用于访问 Epic 的设备信息，以及孩子使用 Epic 的情况。Epic 不会要求孩子提供其他信息，也不允许孩子通过 Epic 与他人分享个人信息。"],
+ ["Email address to send you updates about your child’s reading and learning progress on Epic, Epic news, promotions, and events. (You may opt out of receiving these marketing emails at any time.)","Correo electrónico para enviarte novedades sobre la lectura y el progreso de tu hijo en Epic, noticias, promociones y eventos de Epic. (Puedes darte de baja de estos correos en cualquier momento.)","电子邮箱，用于向你发送孩子在 Epic 上的阅读与学习进度、Epic 新闻、优惠和活动。（你可随时退订这些营销邮件。）"],
+ ["Your child may receive in-app notifications on the mobile device used to access Epic. We do not collect additional personal information from the child to send these notifications. These notifications are triggered automatically by events in the Epic app. You can turn off notifications through your device settings.","Tu hijo puede recibir notificaciones en el dispositivo con el que usa Epic. No recogemos más datos personales del niño para enviarlas. Se activan automáticamente con eventos de la app. Puedes desactivarlas en los ajustes del dispositivo.","孩子可能会在使用 Epic 的设备上收到应用内通知。我们不会为发送通知而额外收集孩子的个人信息。这些通知由 Epic 应用内的事件自动触发。你可以在设备设置中关闭通知。"],
+ ["You have the right to refuse to permit your child’s participation in Epic at any time.","Tienes derecho a negarte en cualquier momento a que tu hijo participe en Epic.","你有权随时拒绝让孩子参与 Epic。"]
+];
+/* books: getepic.com homepage picks per age group (5 & under / 6–8 / 9–12) */
+var BOOKS = {
+ a:[['77638','Cookies for Elmo'],['14401','How Do Dinosaurs Eat Their Food?','How Do Dinosaurs Eat…'],['74069','Curious George: A Home for Honeybees','Curious George'],
+    ['73026','Goodnight, Goodnight, Construction Site','Goodnight, Construction Site'],['75999','The Bear and the Moon'],['6071','Monkey with a Tool Belt']],
+ b:[['80131','Scribbles and Ink: Hike to the Top','Scribbles and Ink'],['78932','Monkey with a Tool Belt and the Maniac Muffins','Monkey with a Tool Belt'],['73374','Ivy + Bean'],
+    ['61147','My Pet Slime'],['8120','National Geographic Readers: Sharks','Sharks'],['14343','The Dot']],
+ c:[['81395','Big Nate Goes Bananas!','Big Nate'],['14623','Wings of Fire: The Dragonet Prophecy','Wings of Fire'],['10072','Phoebe and Her Unicorn'],
+    ['32495','Diary of an 8-Bit Warrior','Diary of an 8-Bit Warrior'],['49120','El Deafo'],['67326','Explorer Academy: The Double Helix','Explorer Academy']]
+};
+var BK = {}; Object.keys(BOOKS).forEach(function(g){ BOOKS[g].forEach(function(b){ BK[b[0]]={id:b[0],t:b[1],s:b[2]||b[1],g:g}; }); });
+function bucket(age){ return age<=5 ? 'a' : (age<=8 ? 'b' : 'c'); }
+function cov(id){ return 'img/c'+id+'.webp'; }
+var QUOTES = [
+  ['This app is now central to our bedtime routine.','atypicalperception · App Store review'],
+  ['This app has helped to spark my son’s love of reading, and that spark has been eluding us for some time now!','QueenMeRee · App Store review'],
+  ['Epic strikes the perfect balance between educational and fun…','TechCrunch'],
+  ['Epic is incredibly valuable because it gives students exposure to books that they wouldn’t get from a library or our classroom.','Cindy, Epic Educator Ambassador']
+];
+var LOCALE = {en:'en-US', es:'es-ES', zh:'zh-CN'};
+
+/* ================= state ================= */
+var S0 = {lang:'en', theme:'light'};
+function defaults(){ return { lang:S0.lang, theme:S0.theme, year:'', age:6, book:'80131', name:'Nick', plan:'year', fav:false }; }
+var S = defaults();
+function L(){ return LANGS.indexOf(S.lang); }
+function t(k,v){ var s=(T[k]||[k])[L()]; if(v) Object.keys(v).forEach(function(x){ s=s.split('{'+x+'}').join(v[x]); }); return s; }
+function nm(){ var n=(S.name||'').trim(); return n || (['your child','tu hijo','孩子'][L()]); }
+function ageL(){ return t('bk.age',{n:S.age}); }
+function addDays(n){ var d=new Date(); d.setDate(d.getDate()+n); return d; }
+function fmtDate(d){ return new Intl.DateTimeFormat(LOCALE[S.lang],{month:'short',day:'numeric'}).format(d); }
+
+/* ================= builders (re-run on language change) ================= */
+function buildPad(){ var p=document.getElementById('pad'), h='';
+  [1,2,3,4,5,6,7,8,9].forEach(function(n){ h+='<button class="ep-key" data-k="'+n+'">'+n+'</button>'; });
+  h+='<button class="ep-key z" data-k="0">0</button><button class="ep-del" data-k="del" aria-label="Delete"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M13 3h23a2 2 0 0 1 2 2v20a2 2 0 0 1-2 2H13L2 15z"/><path d="m19 10 10 10M29 10 19 20"/></svg></button>';
+  p.innerHTML=h;
+  p.querySelectorAll('button').forEach(function(b){ b.addEventListener('click',function(){ keyPress(b.dataset.k); }); });
+}
+function buildData(){ document.getElementById('dataList').innerHTML=DATA.map(function(d){ return '<li>'+d[L()]+'</li>'; }).join(''); }
+function buildAges(){ var s=document.getElementById('ageSel'), h=''; for(var a=3;a<=12;a++) h+='<option value="'+a+'">'+t('bk.age',{n:a})+'</option>';
+  s.innerHTML=h; s.value=S.age; }
+function buildGrid(){ var g=document.getElementById('bookGrid'); g.innerHTML='';
+  BOOKS[bucket(S.age)].forEach(function(b){ var el=document.createElement('button'); el.className='ep-cov'; el.dataset.v=b[0];
+    el.innerHTML='<img src="'+cov(b[0])+'" alt="'+b[1].replace(/"/g,'')+'">';
+    el.addEventListener('click',function(){ S.book=b[0]; syncScreen(); go('name'); }); g.appendChild(el); }); }
+function applyStatic(){
+  document.documentElement.lang=S.lang==='zh'?'zh-CN':S.lang;
+  document.querySelectorAll('[data-t]').forEach(function(el){ el.textContent=t(el.dataset.t); });
+  document.querySelectorAll('[data-th]').forEach(function(el){ el.innerHTML=t(el.dataset.th); });
+  buildData(); buildAges(); buildGrid();
+}
+buildPad();
+
+/* ================= parent check keypad ================= */
+function keyPress(k){
+  var err=document.getElementById('yErr'); err.textContent='';
+  if(k==='del'){ S.year=S.year.slice(0,-1); paintYear(); return; }
+  if(S.year.length>=4) return;
+  S.year+=k; paintYear();
+  if(S.year.length===4){
+    var y=+S.year, max=new Date().getFullYear()-18;
+    if(y>=1900 && y<=max){ setTimeout(function(){ if(cur==='gate') go('data'); },320); }
+    else { var bx=document.getElementById('yBoxes'); bx.classList.remove('bad'); void bx.offsetWidth; bx.classList.add('bad');
+      err.textContent=t('gate.bad'); setTimeout(function(){ S.year=''; paintYear(); },450); }
+  }
+}
+function paintYear(){ document.querySelectorAll('#yBoxes span').forEach(function(s,i){ s.textContent=S.year[i]||''; s.classList.toggle('cur', i===S.year.length); }); }
+
+/* ================= everything downstream reads S ================= */
+function tl(kind){
+  var s='<span class="ep-ts"><span class="ep-ti"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2" fill="#fff" stroke="none"/><path d="M8 11V8a4 4 0 0 1 7.7-1.5"/></svg></span><span><b>'+t('tl.t')+'</b><span>'+t('tl.td',{n:nm(),b:BK[S.book].s})+'</span></span></span>'
+    + '<span class="ep-ts"><span class="ep-ti"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></span><span><b>'+t('tl.5')+'</b><span>'+t('tl.5d')+'</span></span></span>'
+    + '<span class="ep-ts"><span class="ep-ti"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>'+t('tl.7')+'</b><span>'+t(kind==='year'?'tl.7y':'tl.7m',{d:fmtDate(addDays(7))})+'</span></span></span>';
+  return s;
+}
+function syncScreen(){
+  var b=BK[S.book], n=nm();
+  if(bucket(S.age)!==b.g){ S.book=BOOKS[bucket(S.age)][0][0]; b=BK[S.book]; }
+  paintYear();
+  document.getElementById('ageSel').value=S.age;
+  document.querySelectorAll('#bookGrid .ep-cov').forEach(function(el){ el.classList.toggle('on', el.dataset.v===S.book); });
+  document.getElementById('nameCov').src=cov(S.book);
+  var ni=document.getElementById('nameIn'); if(document.activeElement!==ni) ni.value=S.name;
+  document.getElementById('nameBtn').disabled=!S.name.trim();
+
+  document.getElementById('loadH').textContent=t('ld.h',{n:n});
+  var st=document.querySelectorAll('#loadSteps .ep-ls .t');
+  st[0].textContent=t('ld.1',{a:ageL()}); st[1].textContent=t('ld.2',{b:b.s}); st[2].textContent=t('ld.3'); st[3].textContent=t('ld.4',{n:n});
+
+  document.getElementById('payCov').src=cov(S.book);
+  document.getElementById('payTitle').textContent=b.t;
+  document.getElementById('payFor').innerHTML='<svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>'+t('po.for',{n:n,a:ageL()});
+  document.getElementById('favBtn').classList.toggle('on',S.fav);
+  document.getElementById('nextLab').textContent=t('po.next',{n:n});
+  document.getElementById('nextRow').innerHTML=BOOKS[b.g].filter(function(x){ return x[0]!==S.book; }).slice(0,3)
+    .map(function(x){ return '<div><img src="'+cov(x[0])+'" alt="'+x[1].replace(/"/g,'')+'"></div>'; }).join('');
+  document.getElementById('valLab').textContent=t('po.val',{n:n});
+
+  document.getElementById('payH').textContent=t('pw.h',{n:n});
+  document.querySelectorAll('#planList .ep-plan').forEach(function(el){ el.classList.toggle('on', el.dataset.v===S.plan); });
+  document.getElementById('tlYear').innerHTML=S.plan==='year'?tl('year'):'';
+  document.getElementById('tlMonth').innerHTML=S.plan==='month'?tl('month'):'';
+  document.getElementById('payCta').textContent=t('pw.cta',{n:n});
+  document.getElementById('payAfter').textContent=t(S.plan==='year'?'pw.afterY':'pw.afterM');
+
+  document.getElementById('offH').textContent=t('of.h');
+  document.getElementById('offS').textContent=t('of.s',{n:n});
+  document.getElementById('tlOffer').innerHTML=tl('month');
+  document.getElementById('acSub').textContent=t('ac.s',{n:n});
+}
+
+/* ================= router ================= */
+var ORDER=['welcome','gate','data','books','name','loader','payoff','paywall','offer','account','trial'];
+var LABEL={welcome:'Welcome',gate:'Parent check',data:'Data notice',books:'First book',name:'Child’s name',loader:'Loader',payoff:'Their shelf',paywall:'Plan screen',offer:'Offer on close',account:'Account',trial:'Trial started'};
+var scr={}, hist=[], cur='welcome', loadTimers=[];
+document.querySelectorAll('.scr').forEach(function(s){ scr[s.dataset.id]=s; });
+
+function chrome(){ var dark=S.theme==='dark', l=dark || !!scr[cur].dataset.light;
+  document.getElementById('sbar').classList.toggle('light',l);
+  document.getElementById('homebar').classList.toggle('light',dark || cur==='welcome' || cur==='loader'); }
+function enter(id){ chrome(); paintChips(); paintPanel(); clearLoad(); document.getElementById('sysAlert').classList.remove('on');
+  if(id==='gate'){ S.year=''; paintYear(); document.getElementById('yErr').textContent=''; }
+  if(id==='loader') runLoader(); }
+function go(id,opts){
+  opts=opts||{}; if(id===cur) return;
+  var from=scr[cur], to=scr[id];
+  if(!opts.back) hist.push(cur);
+  if(from){ from.classList.remove('is-active');
+    if(!to.classList.contains('sheet') && !from.classList.contains('sheet')) from.classList.add('is-past'); }
+  Object.keys(scr).forEach(function(k){ if(k!==id&&k!==cur) scr[k].classList.remove('is-active'); });
+  if(id==='welcome'){ Object.keys(scr).forEach(function(k){ scr[k].classList.remove('is-past'); }); hist=[]; }
+  to.classList.remove('is-past'); to.classList.add('is-active');
+  cur=id; enter(id);
+}
+function back(){
+  if(!hist.length) return;
+  var prev=hist.pop();
+  scr[cur].classList.remove('is-active');
+  scr[prev].classList.remove('is-past'); scr[prev].classList.add('is-active');
+  cur=prev; enter(prev);
+}
+function jump(id){
+  var i=ORDER.indexOf(id);
+  Object.keys(scr).forEach(function(k){ scr[k].classList.add('nofx'); scr[k].classList.remove('is-active','is-past'); });
+  hist=ORDER.slice(0,i<0?0:i).filter(function(k){ return k!=='offer' && k!=='loader'; });
+  if(id==='offer') scr.paywall.classList.add('is-active');
+  scr[id].classList.add('is-active'); cur=id;
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    Object.keys(scr).forEach(function(k){ scr[k].classList.remove('nofx'); }); }); });
+  syncScreen(); enter(id);
+}
+function paintChips(){
+  var c=document.getElementById('chips');
+  if(!c.children.length){
+    ORDER.forEach(function(id){
+      var b=document.createElement('button'); b.className='chip'+(id==='offer'?' offer':''); b.textContent=LABEL[id];
+      b.dataset.id=id; b.onclick=function(){ stopDemo(); jump(id); }; c.appendChild(b);
+    });
+  }
+  c.querySelectorAll('.chip').forEach(function(b){ b.classList.toggle('on', b.dataset.id===cur); });
+}
+
+function clearLoad(){ loadTimers.forEach(clearTimeout); loadTimers=[]; }
+function runLoader(){
+  var k=demo.on?0.48:1, bar=document.getElementById('lbar');
+  var steps=[].slice.call(document.querySelectorAll('#loadSteps .ep-ls'));
+  steps.forEach(function(s){ s.classList.remove('on'); });
+  bar.style.transition='none'; bar.style.width='0';
+  requestAnimationFrame(function(){ bar.style.transition='width '+(5.2*k)+'s linear'; bar.style.width='100%'; });
+  function showQuote(i){
+    document.getElementById('qText').textContent='“'+QUOTES[i][0]+'”';
+    document.getElementById('qWho').textContent='— '+QUOTES[i][1];
+    document.querySelectorAll('#qDots i').forEach(function(d,n){ d.classList.toggle('on',n===i); });
+  }
+  showQuote(0);
+  steps.forEach(function(s,i){ loadTimers.push(setTimeout(function(){ s.classList.add('on'); },(600+i*1000)*k)); });
+  [1,2,3].forEach(function(i){ loadTimers.push(setTimeout(function(){ showQuote(i); },(1400+(i-1)*1400)*k)); });
+  loadTimers.push(setTimeout(function(){ if(cur==='loader') go('payoff'); },5400*k));
+}
+
+/* ================= wiring ================= */
+document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ if(!b.disabled) go(b.dataset.go); }); });
+document.querySelectorAll('[data-back]').forEach(function(b){ b.addEventListener('click',back); });
+document.querySelectorAll('#planList .ep-plan').forEach(function(b){ b.addEventListener('click',function(){ S.plan=b.dataset.v; syncScreen(); }); });
+document.getElementById('ageSel').addEventListener('change',function(e){ S.age=+e.target.value; buildGrid(); syncScreen(); });
+document.getElementById('nameIn').addEventListener('input',function(e){ S.name=e.target.value; syncScreen(); });
+document.getElementById('favBtn').addEventListener('click',function(){ S.fav=!S.fav; syncScreen(); });
+document.getElementById('payClose').addEventListener('click',function(){ go('offer'); });
+document.getElementById('offClose').addEventListener('click',function(){ go('account'); });
+document.getElementById('payCta').addEventListener('click',function(){ go('account'); });
+document.getElementById('offerCta').addEventListener('click',function(){ go('account'); });
+document.getElementById('remindBtn').addEventListener('click',function(){ document.getElementById('sysAlert').classList.add('on'); });
+document.getElementById('maybeBtn').addEventListener('click',function(){ go('welcome'); });
+
+function setSeg(id,attr,val){ document.querySelectorAll('#'+id+' button').forEach(function(b){ b.classList.toggle('on', b.dataset[attr]===val); }); }
+function setLang(l){ S.lang=l; S0.lang=l; setSeg('segLang','lang',l); applyStatic(); syncScreen(); paintPanel(); }
+function setTheme(th){ S.theme=th; S0.theme=th; document.getElementById('phoneIn').classList.toggle('dark',th==='dark'); setSeg('segTheme','theme',th); chrome(); }
+document.querySelectorAll('#segLang button').forEach(function(b){ b.addEventListener('click',function(){ stopDemo(); setLang(b.dataset.lang); }); });
+document.querySelectorAll('#segTheme button').forEach(function(b){ b.addEventListener('click',function(){ setTheme(b.dataset.theme); }); });
+
+/* ================= the 30-second walkthrough ================= */
+var demo={tok:0,on:false,t0:0,iv:null}, finger=document.getElementById('finger'), phoneIn=document.getElementById('phoneIn');
+function W(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+function cap(txt){ document.getElementById('demoTxt').textContent=txt; }
+async function tap(sel,tok,noClick){
+  if(demo.tok!==tok) throw 0;
+  var el=typeof sel==='string'?document.querySelector(sel):sel; if(!el) return;
+  var r=el.getBoundingClientRect(), p=phoneIn.getBoundingClientRect(), z=p.width/phoneIn.offsetWidth||1;
+  finger.style.left=((r.left-p.left+r.width/2)/z)+'px'; finger.style.top=((r.top-p.top+r.height/2)/z)+'px';
+  finger.classList.add('show'); await W(380); if(demo.tok!==tok) throw 0;
+  finger.classList.add('press'); await W(120); finger.classList.remove('press'); if(!noClick) el.click(); await W(160);
+  if(demo.tok!==tok) throw 0;
+}
+async function pause(ms,tok){ await W(ms); if(demo.tok!==tok) throw 0; }
+function startDemo(){
+  stopDemo(); var tok=++demo.tok; demo.on=true; demo.t0=Date.now();
+  var keep={lang:S.lang,theme:S.theme}; S=defaults(); S.lang=keep.lang; S.theme=keep.theme;
+  applyStatic(); jump('welcome');
+  document.getElementById('demoCap').classList.remove('hidden');
+  demo.iv=setInterval(function(){ document.getElementById('demoProg').style.width=Math.min(100,(Date.now()-demo.t0)/290)+'%'; },200);
+  (async function(){
+    try{
+      cap('A parent opens Epic. “Families, Start Reading” no longer leads to sign-up.'); await pause(1400,tok);
+      await tap('[data-id=welcome] .ep-wbtn',tok);
+      cap('Your birth-year check stays first.'); await pause(450,tok);
+      for(var d of ['1','9','8','6']){ await tap('#pad [data-k="'+d+'"]',tok); }
+      await pause(500,tok);
+      cap('Your data notice, before anything about the child.'); await pause(700,tok);
+      await tap('[data-id=data] .ep-btn',tok);
+      cap('Your first-book screen, now before the price. The age sets the shelf.'); await pause(500,tok);
+      await tap('#ageSel',tok,true); S.age=7; syncScreen(); await pause(600,tok);
+      await tap('#bookGrid [data-v="73374"]',tok);
+      cap('The child’s name. Everything after this uses it.'); await pause(400,tok);
+      await tap('#nameIn',tok,true); S.name='';
+      for(var ch of 'Maya'){ S.name+=ch; syncScreen(); await pause(130,tok); }
+      await pause(300,tok); await tap('#nameBtn',tok);
+      cap('Their answers read back while the shelf is built.'); await pause(2750,tok);
+      cap('Maya’s shelf: her book, her age group, before any price.'); await pause(900,tok);
+      await tap('#favBtn',tok); await pause(500,tok);
+      await tap('[data-id=payoff] .ep-rcard .ep-btn',tok);
+      cap('The plan screen names Maya and her book, with your 4.7 and Editors’ Choice.'); await pause(1600,tok);
+      await tap('#planList [data-v=month]',tok); await pause(600,tok); await tap('#planList [data-v=year]',tok); await pause(500,tok);
+      cap('They close it. One second chance: monthly, same free week.'); await tap('#payClose',tok); await pause(2200,tok);
+      cap('That is the flow. The account comes after this, once the trial has started.');
+      finger.classList.remove('show'); await pause(2400,tok); stopDemo();
+    }catch(e){}
+  })();
+}
+function stopDemo(){ if(!demo.on) return; demo.tok++; demo.on=false; clearInterval(demo.iv); finger.classList.remove('show','press');
+  document.getElementById('demoCap').classList.add('hidden'); }
+document.getElementById('demoBtn').addEventListener('click',startDemo);
+document.getElementById('demoStop').addEventListener('click',stopDemo);
+phoneIn.addEventListener('pointerdown',function(e){ if(e.isTrusted && demo.on) stopDemo(); });
+</script>
+<script>
+/* ---- the short panel: hypothesis + potential outcome, nothing else ---- */
+var PANEL = {
+welcome:{ctx:true,t:'Welcome',
+ kept:'Untouched — your blue, the epic! wordmark, “Inspire a lifelong love of reading”, the white Families pill, Educators, Students and Log In. Only the next step changes: Families now goes to your parent check instead of sign-up (idea 01). The photo is from getepic.com, because your carousel art was too low-resolution in our capture to reuse sharply.'},
+gate:{ctx:true,t:'Verify Age',
+ kept:'Your birth-year keypad exactly as it ships — blue circle keys, the four boxes, the delete key and the X. It stays first, so a grown-up confirms before anything about the child is asked. Type any adult year to continue.'},
+data:{ctx:true,t:'About Our Data Protection Practices',
+ kept:'Your notice and I Agree, word for word. It now sits right before the questions it describes: the child’s age, first book and name.'},
+books:{n:2,t:'Let them pick the first book before the price',
+ hyp:'Try asking for the child’s age and first book before the plan screen, <b>because today these come only after the trial has started, so the most personal part of your flow does no selling</b>. The books are your own getepic.com picks for each age group. Change the age and the shelf changes.',
+ kept:'Your “Let’s find a first book to read together!” screen, the age dropdown and the two-column cover grid. Tapping a cover moves on, as it does today.',
+ out:'CR +10–20%'},
+name:{n:2,t:'Let them pick the first book before the price',
+ hyp:'Try asking for the child’s name here, <b>because from this point every screen can talk about one child, not “your kid”</b>. Type a different name and the loader, the shelf and the plan screen all change.',
+ kept:'Your chosen-cover hero, “Great choice! One last step to start reading.”, the Child’s Name field and your blue pill.',
+ out:'CR +10–20%'},
+loader:{n:2,t:'Let them pick the first book before the price',
+ hyp:'Try reading their answers back while the shelf is built, <b>because a wait only pays off when something personal comes after it</b>. The quotes are from your App Store listing.',
+ kept:'Your splash blue and wordmark.',
+ out:'CR +10–20%'},
+payoff:{n:2,t:'Let them pick the first book before the price',
+ hyp:'Try showing the child’s shelf before the price, <b>because a parent who sees their child’s name next to the book they just picked has a reason to start the trial</b>. “Up next” comes from the same age group. The three lines at the bottom are your “Get any kid excited to read and learn!” screen, merged in here.',
+ kept:'Your book page — the blue toolbar, the white card, Start Reading! and the Favorite outline button. Nothing is invented: title, age group and the three lines are all yours.',
+ out:'CR +10–20%'},
+paywall:{n:3,t:'Put the child and their book on the plan screen',
+ hyp:'Try naming the child in your headline, their book on the Today step of your timeline and both on the button, <b>because the plan screen reads the same for every parent, right after they told you who the books are for</b>.',
+ out:'CR +15–20%',
+ n2:4, hyp2:'Try your 4.7 from 519K ratings, Apple Editors’ Choice and your “95% of Epic parents” line above the plans, <b>because none of them appear anywhere between install and payment today</b>.',
+ out2:'CR +10–15%',
+ kept:'Your plan screen as it ships — the annual card with the pink SAVE 44% flag, the Today / Day 5 / Day 7 timeline, the monthly card, the blue button and the renewal line under it. The only addition is a close X, in the style of your Verify Age screen.'},
+offer:{n:5,t:'Give a second chance when they close',
+ hyp:'Try one second offer when the plan screen is closed: your monthly plan with the same free week, next to what Epic Family adds over Epic at school, <b>because we found no close button on your plan screen and nothing behind a no. A parent not ready for a year leaves with nothing</b>. 12,99 € and the 7-day trial are both on your own plan screen.',
+ kept:'Your monthly card, timeline, blue button and renewal line. The comparison uses your own words: weekdays 7am–4pm from getepic.com, any Apple device and offline from your App Store listing, weekly updates from your parents page.',
+ out:'ARPU +10–15%'},
+account:{n:1,t:'Create the account after the trial starts',
+ hyp:'Try asking for the account after the trial has started, <b>because today Apple, Google, Facebook or an email and a password come second, before a parent has seen a single book</b>. The account still happens. Now it saves a shelf they care about.',
+ kept:'Your Create Your Account screen — the four outlined buttons and “Have an account? Sign In”. One line added under the title.',
+ out:'CR +8% · ARPU +17%'},
+trial:{ctx:true,t:'Your trial has started!',
+ kept:'Your screen, Remind and Maybe, and the system prompt behind Remind. Notifications already come after payment in your flow, so nothing moves here.'}
+};
+
+function outBlock(lab,val){
+  return '<div class="pn-out"><div class="lab">'+lab+'</div><div class="v">'+val+'</div></div>';
+}
+function paintPanel(){
+  var d=PANEL[cur]; if(!d) return;
+  var h='';
+  if(d.ctx){
+    h += '<div class="pn-n ctx">Context · no change proposed</div><h3 class="pn-t">'+d.t+'</h3>'
+       + '<div class="pn-kept">'+d.kept+'</div>';
+  } else {
+    h += '<div class="pn-n">Idea '+d.n+' of 5</div><h3 class="pn-t">'+d.t+'</h3>'
+       + '<p class="pn-hyp">'+d.hyp+'</p>'
+       + outBlock('Potential outcome · based on Adapty data', d.out);
+    if(d.hyp2){
+      h += '<div class="pn-sep"></div>'
+         + '<div class="pn-n">Idea '+d.n2+' of 5</div>'
+         + '<p class="pn-hyp" style="margin-top:12px">'+d.hyp2+'</p>'
+         + outBlock('Potential outcome · based on Adapty data', d.out2);
+    }
+    h += '<div class="pn-kept"><b>Your design, unchanged.</b> '+d.kept+'</div>';
+  }
+  if(S.lang!=='en') h += '<div class="pn-kept"><b>Language.</b> Screens are shown in '+(S.lang==='es'?'Spanish':'Simplified Chinese')+', two of the languages your App Store listing names, to show one flow serving every market. Translated by us. Store prices stay as published in euros; book titles and the loader quotes stay verbatim in English.</div>';
+  h += '<div class="pn-foot">Ranges are Adapty’s expected effect from tests across 30,000+ subscription apps — not measured lift for Epic. '
+     + 'Prices, ratings, quotes, books and feature lines come from your own published material.</div>';
+  document.getElementById('panel').innerHTML = h;
+}
+
+/* ---- views, jumps from the overview ---- */
+function showView(v){
+  if(v!=='proto') stopDemo();
+  document.querySelectorAll('.view').forEach(function(x){ x.classList.remove('on'); });
+  document.getElementById('view-'+v).classList.add('on');
+  document.querySelectorAll('.nav-links button[data-view]').forEach(function(b){ b.classList.toggle('on', b.dataset.view===v); });
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ showView(b.dataset.view); }); });
+document.querySelectorAll('.idea[data-jump]').forEach(function(b){
+  b.addEventListener('click',function(){ showView('proto'); jump(b.dataset.jump); });
+});
+document.querySelectorAll('[data-demo]').forEach(function(b){ b.addEventListener('click',function(){ showView('proto'); startDemo(); }); });
+
+applyStatic();
+scr.welcome.classList.add('is-active');
+syncScreen(); chrome(); paintChips(); paintPanel();
+if(/[?&]open=proto/.test(location.search)) showView('proto');
+</script>
+</body>
+</html>
